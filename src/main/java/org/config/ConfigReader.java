@@ -6,9 +6,6 @@ import java.util.Properties;
 public class ConfigReader {
 
     public static String readJsonPath() {
-        // Mostrar el classpath
-        System.out.println("Classpath: " + System.getProperty("java.class.path"));
-        
         Properties properties = new Properties();
         try (InputStream input = ConfigReader.class.getClassLoader().getResourceAsStream("config.properties")) {
             if (input == null) {
@@ -16,7 +13,7 @@ public class ConfigReader {
                 return null;
             }
             properties.load(input);
-            return properties.getProperty("json.path");  // Asegúrate de que la propiedad exista
+            return properties.getProperty("json.path"); 
         } catch (Exception e) {
             e.printStackTrace();
         }
