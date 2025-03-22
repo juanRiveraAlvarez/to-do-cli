@@ -13,6 +13,7 @@ import lombok.extern.jackson.Jacksonized;
 @NoArgsConstructor
 public class CustomDate{
   
+  private long id;
   private short day;
   private short month;
   private short year;

@@ -3,11 +3,12 @@ package org.infraestructure.adapters;
 import org.infraestructure.ports.JsonUtilsPort;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
@@ -19,7 +20,7 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
   static{
     try{
       if(JsonUtilsAdapter.class.getClassLoader().getResourceAsStream("config.properties") == null){
-        System.out.println("no");
+        throw new IOException("config.properties not found");
       }else{
         properties.load(JsonUtilsAdapter.class.getClassLoader().getResourceAsStream("config.properties"));
       }
@@ -28,15 +29,14 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
     }
   }
 
-  public JsonUtilsAdapter(){
-    this.objectMapper = new ObjectMapper();
-//    this.file = new File(properties.getProperty(".path"));
+  public JsonUtilsAdapter(ObjectMapper objectMapper){
+    this.objectMapper = objectMapper;
   }
 
   @Override
-  public T readFromJson(Class<T> clazz , T t){
+  public ArrayList<T> readFromJson(Class<T> clazz){
     try{
-      return this.objectMapper.readValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), clazz);
+      return this.objectMapper.readValue(new File(properties.getProperty(clazz.getSimpleName()+".path")), ArrayList.class);
     }catch(Exception e){
       System.out.println(e);
     }
@@ -44,13 +44,16 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
   }
 
   @Override
-  public void writeToJson(T t){
+  public T writeToJson(T t){
     try{
-      //System.out.println(properties.getProperty(t.getClass().getSimpleName()+".path"));
-      this.objectMapper.writeValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), t);
+      ArrayList<T> listOfObjects = this.objectMapper.readValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), ArrayList.class);
+      listOfObjects.add(t);
+      this.objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), listOfObjects);
+      return t;
     }catch(Exception e){
       System.out.println(e);
     }
+    return null;
   }
 
 }

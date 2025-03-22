@@ -1,8 +1,10 @@
 package org.infraestructure.ports;
 
+import java.util.List;
+
 public interface JsonUtilsPort<T>{
   
-  T readFromJson(Class<T> clazz, T t);
-  void writeToJson(T t);
+  List<T> readFromJson(Class<T> clazz);
+  T writeToJson(T t);
 
 }

@@ -9,6 +9,7 @@ import lombok.Data;
 @NoArgsConstructor
 public class Task{
 
+  private long id;
   private String title;
   private boolean isArchived;
   private boolean checked;

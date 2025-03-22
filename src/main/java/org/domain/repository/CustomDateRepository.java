@@ -1,15 +1,22 @@
-package org.repository;
+package org.domain.repository;
 
 import org.domain.model.CustomDate;
+import org.infraestructure.adapters.JsonUtilsAdapter;
 
 import java.util.ArrayList;
 
 
 public class CustomDateRepository implements PersistenceInterface<CustomDate>{
 
+  private JsonUtilsAdapter<CustomDate> jsonUtilsAdapter;
+
+  public CustomDateRepository(JsonUtilsAdapter<CustomDate> jsonUtilsAdapter){
+    this.jsonUtilsAdapter = jsonUtilsAdapter;
+  }
+
   @Override
-  public void save(CustomDate t){
-    System.out.println();
+  public CustomDate save(CustomDate t){
+    return jsonUtilsAdapter.writeToJson(t);
   }
 
   @Override
