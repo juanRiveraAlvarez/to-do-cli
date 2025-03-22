@@ -2,7 +2,7 @@ package org.infraestructure.ports;
 
 public interface JsonUtilsPort<T>{
   
-  T readFromJson(T type);
+  T readFromJson(Class<T> clazz, T t);
   void writeToJson(T t);
 
 }

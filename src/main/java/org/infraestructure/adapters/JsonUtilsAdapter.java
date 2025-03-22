@@ -15,7 +15,6 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
   public static Properties properties = new Properties();
 
   private ObjectMapper objectMapper;
-  private File file;
 
   static{
     try{
@@ -35,15 +34,20 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
   }
 
   @Override
-  public T readFromJson(T type){
-    return type;
+  public T readFromJson(Class<T> clazz , T t){
+    try{
+      return this.objectMapper.readValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), clazz);
+    }catch(Exception e){
+      System.out.println(e);
+    }
+      return null;
   }
 
   @Override
   public void writeToJson(T t){
     try{
-      System.out.println(t.getClass().getSimpleName());
-      //this.objectMapper.writeValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), t);
+      //System.out.println(properties.getProperty(t.getClass().getSimpleName()+".path"));
+      this.objectMapper.writeValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), t);
     }catch(Exception e){
       System.out.println(e);
     }
