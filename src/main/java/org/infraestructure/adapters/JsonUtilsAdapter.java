@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Map;
 
-import org.domain.model.CustomDate;
 
 public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
 
@@ -49,13 +48,9 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
   @Override
   public ArrayList<T> writeToJson(ArrayList<T> t){
     try{
-      /*
-      ArrayList<T> listOfObjects = this.objectMapper.readValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), ArrayList.class);
-      listOfObjects.add(t);
-      */
-      this.objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), t);
+      this.objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(properties.getProperty(t.get(0).getClass().getSimpleName()+".path")), t);
       return t;
-    }catch(Exception e){
+    }catch(IOException e){
       System.out.println(e);
     }
     return null;

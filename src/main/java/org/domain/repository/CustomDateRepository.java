@@ -4,7 +4,6 @@ import org.domain.model.CustomDate;
 import org.infraestructure.adapters.JsonUtilsAdapter;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -20,8 +19,11 @@ public class CustomDateRepository implements PersistenceInterface<CustomDate>{
   @Override
   public CustomDate save(CustomDate t){
     ArrayList<Map<String, Object>> objects  = this.jsonUtilsAdapter.readFromJson(CustomDate.class);
-    //objects.add(t);
-    //this.jsonUtilsAdapter.writeToJson(objects);
+    ArrayList<CustomDate> customDates = objects.stream()
+      .map( i -> new CustomDate(((Number)i.get("id")).longValue(), ((Number) i.get("day")).shortValue(), ((Number) i.get("month")).shortValue(), ((Number) i.get("year")).shortValue()))
+      .collect(Collectors.toCollection(ArrayList::new));
+    customDates.add(t);
+    this.jsonUtilsAdapter.writeToJson(customDates);
     return t;
   }
 
@@ -36,35 +38,38 @@ public class CustomDateRepository implements PersistenceInterface<CustomDate>{
 
   @Override
   public CustomDate getById(long id){
+    ArrayList<Map<String, Object>> objects = this.jsonUtilsAdapter.readFromJson(CustomDate.class);
+    for (Map<String,Object> i : objects) {
+      if(((Number)i.get("id")).longValue() == id){
+        return new CustomDate(((Number)i.get("id")).longValue(), ((Number) i.get("day")).shortValue(), ((Number) i.get("month")).shortValue(), ((Number) i.get("year")).shortValue());
+      } 
+    }
     return null;
   }
 
   @Override
   public void deleteById(long id){
-  }
-
-  /*
-  @Override
-  public void update(long id, CustomDate t){
-    ArrayList<CustomDate> objects = this.jsonUtilsAdapter.readFromJson(CustomDate.class).stream()
-      .map( i -> {
-        return new CustomDate((long) i.get("id"), (short)i.get("day"),(short)i.get("month"), (short)i.get("year"));
-      })
+    ArrayList<Map<String, Object>> objects = this.jsonUtilsAdapter.readFromJson(CustomDate.class);
+    objects.removeIf(i -> ((Number) i.get("id")).longValue() == id);
+    ArrayList<CustomDate> customDates = objects.stream()
+      .map( i -> new CustomDate(((Number)i.get("id")).longValue(), ((Number) i.get("day")).shortValue(), ((Number) i.get("month")).shortValue(), ((Number) i.get("year")).shortValue()))
       .collect(Collectors.toCollection(ArrayList::new));
-    for (CustomDate i : objects) {
-       if(i.getId() == id){
-          objects.set(objects.indexOf(i), t); 
-       }
-    }
-    this.jsonUtilsAdapter.writeToJson(objects);
+    this.jsonUtilsAdapter.writeToJson(customDates);
   }
-  */
   
   @Override
   public void update(long id, CustomDate t) {
-     // Lee la lista de LinkedHashMap desde el JSON
-    ArrayList<Map<String, Object>> jsonList = this.jsonUtilsAdapter.readFromJson(CustomDate.class);
-   // this.jsonUtilsAdapter.writeToJson(objects);
+    ArrayList<Map<String, Object>> objects = this.jsonUtilsAdapter.readFromJson(CustomDate.class);
+    ArrayList<CustomDate> customDates = objects.stream()
+      .map( i -> new CustomDate(((Number)i.get("id")).longValue(), ((Number) i.get("day")).shortValue(), ((Number) i.get("month")).shortValue(), ((Number) i.get("year")).shortValue()))
+      .collect(Collectors.toCollection(ArrayList::new));
+    for (CustomDate customDate : customDates) {
+      if(customDate.getId() == id){
+        customDates.set(customDates.indexOf(customDate), t);
+        break;
+      } 
+    }
+    this.jsonUtilsAdapter.writeToJson(customDates);
   }
 
 
