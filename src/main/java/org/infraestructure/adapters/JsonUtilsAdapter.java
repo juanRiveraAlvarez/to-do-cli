@@ -3,13 +3,16 @@ package org.infraestructure.adapters;
 import org.infraestructure.ports.JsonUtilsPort;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Map;
+
+import org.domain.model.CustomDate;
 
 public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
 
@@ -34,9 +37,9 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
   }
 
   @Override
-  public ArrayList<T> readFromJson(Class<T> clazz){
+  public ArrayList<Map<String, Object>> readFromJson(Class<T> clazz){
     try{
-      return this.objectMapper.readValue(new File(properties.getProperty(clazz.getSimpleName()+".path")), ArrayList.class);
+      return this.objectMapper.readValue(new File(properties.getProperty(clazz.getSimpleName()+".path")), new TypeReference<ArrayList<Map<String, Object>>>() {});
     }catch(Exception e){
       System.out.println(e);
     }
@@ -44,11 +47,13 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
   }
 
   @Override
-  public T writeToJson(T t){
+  public ArrayList<T> writeToJson(ArrayList<T> t){
     try{
+      /*
       ArrayList<T> listOfObjects = this.objectMapper.readValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), ArrayList.class);
       listOfObjects.add(t);
-      this.objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), listOfObjects);
+      */
+      this.objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(properties.getProperty(t.getClass().getSimpleName()+".path")), t);
       return t;
     }catch(Exception e){
       System.out.println(e);

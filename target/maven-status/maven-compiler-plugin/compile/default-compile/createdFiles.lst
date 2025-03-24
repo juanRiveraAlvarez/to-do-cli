@@ -2,6 +2,7 @@ org/domain/repository/PersistenceInterface.class
 org/domain/model/Task.class
 org/domain/model/CustomDate.class
 org/infraestructure/ports/JsonUtilsPort.class
+org/infraestructure/adapters/JsonUtilsAdapter$1.class
 org/infraestructure/adapters/JsonUtilsAdapter.class
 org/App.class
 org/domain/repository/CustomDateRepository.class
