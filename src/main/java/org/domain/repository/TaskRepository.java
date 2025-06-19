@@ -54,7 +54,6 @@ public class TaskRepository implements PersistenceInterface<Task>{
     ArrayList<Task> tasks = objects.stream()
       .map( i -> new Task(((Number)i.get("id")).longValue(), (String) i.get("title"), (boolean) i.get("archived"), (boolean) i.get("checked")))
       .collect(Collectors.toCollection(ArrayList::new));
-    System.out.println(tasks.size());
     this.jsonUtilsAdapter.writeToJson(tasks, Task.class);
   }
 
