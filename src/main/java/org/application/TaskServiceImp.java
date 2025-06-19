@@ -14,17 +14,18 @@ public class TaskServiceImp implements TaskService{
     this.persistenceInterface  = persistenceInterface;
   }
 
-  public Task addTask(Task t){
-    System.out.println(t.getClass());
+  public Task addTask(String t){
     return this.persistenceInterface.save(t);
   }
 
   public Task deleteTask(long id){
-    return new Task();
+    Task task = this.persistenceInterface.getById(id);
+    this.persistenceInterface.deleteById(id);
+    return task;
   }
 
   public ArrayList<Task> printTasks(){
-    return new ArrayList<Task>();
+    return this.persistenceInterface.getAll();
   }
 
 }

@@ -16,14 +16,15 @@ public class TaskRepository implements PersistenceInterface<Task>{
   }
 
   @Override
-  public Task save(Task t){
+  public Task save(String title){
     ArrayList<Map<String, Object>> objects  = this.jsonUtilsAdapter.readFromJson(Task.class);
     ArrayList<Task> tasks = objects.stream()
       .map( i -> new Task(((Number)i.get("id")).longValue(), (String) i.get("title"), (boolean) i.get("archived"), (boolean) i.get("checked")))
       .collect(Collectors.toCollection(ArrayList::new));
-    tasks.add(t);
-    this.jsonUtilsAdapter.writeToJson(tasks);
-    return t;
+    Task task = new Task(objects.size() > 0 ? ((Number)objects.get(objects.size()-1).get("id")).longValue()+1 : 1, title, false, false);
+    tasks.add(task);
+    this.jsonUtilsAdapter.writeToJson(tasks,Task.class);
+    return task;
   }
   
   @Override
@@ -53,7 +54,8 @@ public class TaskRepository implements PersistenceInterface<Task>{
     ArrayList<Task> tasks = objects.stream()
       .map( i -> new Task(((Number)i.get("id")).longValue(), (String) i.get("title"), (boolean) i.get("archived"), (boolean) i.get("checked")))
       .collect(Collectors.toCollection(ArrayList::new));
-    this.jsonUtilsAdapter.writeToJson(tasks);
+    System.out.println(tasks.size());
+    this.jsonUtilsAdapter.writeToJson(tasks, Task.class);
   }
 
   @Override
@@ -68,7 +70,7 @@ public class TaskRepository implements PersistenceInterface<Task>{
         break;
       } 
     }
-    this.jsonUtilsAdapter.writeToJson(tasks);
+    this.jsonUtilsAdapter.writeToJson(tasks, Task.class);
   }
   
 }

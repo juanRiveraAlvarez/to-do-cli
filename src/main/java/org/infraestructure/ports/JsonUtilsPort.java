@@ -7,6 +7,6 @@ import java.util.Map;
 public interface JsonUtilsPort<T>{
   
   List<Map<String, Object>> readFromJson(Class<T> clazz);
-  ArrayList<T> writeToJson(ArrayList<T> t);
+  ArrayList<T> writeToJson(ArrayList<T> t, Class<T> clazz);
 
 }

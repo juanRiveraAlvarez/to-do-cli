@@ -6,7 +6,7 @@ import org.domain.model.Task;
 
 public interface TaskService{
 
-  Task addTask(Task t);
+  Task addTask(String t);
   Task deleteTask(long id);
   List<Task> printTasks();
 

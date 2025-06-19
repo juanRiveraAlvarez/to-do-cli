@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface PersistenceInterface<T>{
 
-  T save(T t);
+  T save(String t);
   ArrayList<T> getAll();
   T getById(long id);
   void deleteById(long id);

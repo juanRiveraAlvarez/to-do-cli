@@ -46,9 +46,9 @@ public class JsonUtilsAdapter<T> implements JsonUtilsPort<T>{
   }
 
   @Override
-  public ArrayList<T> writeToJson(ArrayList<T> t){
+  public ArrayList<T> writeToJson(ArrayList<T> t, Class<T> clazz){
     try{
-      this.objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(properties.getProperty(t.get(0).getClass().getSimpleName()+".path")), t);
+      this.objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(properties.getProperty(clazz.getSimpleName()+".path")), t);
       return t;
     }catch(IOException e){
       System.out.println(e);
