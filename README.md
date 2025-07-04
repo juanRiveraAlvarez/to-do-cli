@@ -105,7 +105,4 @@ Este proyecto sigue una estructura hexagonal:
 
 Este proyecto está licenciado bajo los términos de la **GNU General Public License v3.0**.
 
-Puedes ver el texto completo de la licencia aquí:  
-📄 [https://www.gnu.org/licenses/gpl-3.0.html](https://www.gnu.org/licenses/gpl-3.0.html)
 
-> Esto significa que puedes usar, modificar y distribuir este software, siempre que mantengas el mismo tipo de licencia y divulgues el código fuente si haces distribuciones derivadas.
